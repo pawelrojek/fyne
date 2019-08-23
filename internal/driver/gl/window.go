@@ -51,8 +51,8 @@ type window struct {
 	fixedSize  bool
 	centered   bool
 	visible    bool
-    
-	scale      float32	
+
+	fixedScale float32
 
 	mousePos           fyne.Position
 	mouseDragged       fyne.Draggable
@@ -179,8 +179,12 @@ func (w *window) SetFixedSize(fixed bool) {
 	runOnMain(w.fitContent)
 }
 
-func (w *window) SetScale(newScale float32) {
-	w.scale = newScale
+func (w *window) FixedScale() float32 {
+	return w.fixedScale
+}
+
+func (w *window) SetFixedScale(newScale float32) {
+	w.fixedScale = newScale
 
 	if newScale <= 0 {
 		newScale = w.detectScale()
@@ -189,7 +193,7 @@ func (w *window) SetScale(newScale float32) {
 
 	// this can trigger resize events that we need to ignore
 	w.fitContent()
-	
+
 	newWidth, newHeight := w.screenSize(w.canvas.size)
 	w.viewport.SetSize(newWidth, newHeight)
 }
@@ -295,8 +299,8 @@ func (w *window) getMonitorForWindow() *glfw.Monitor {
 }
 
 func (w *window) detectScale() float32 {
-	if w.scale > 0 {
-		return w.scale
+	if w.fixedScale > 0 {
+		return w.fixedScale
 	}
 
 	env := os.Getenv("FYNE_SCALE")

@@ -375,6 +375,15 @@ func TestWindow_SetTitle(t *testing.T) {
 	assert.Equal(t, title, w.Title())
 }
 
+func TestWindow_SetFixedScale(t *testing.T) {
+	w := d.CreateWindow("Test")
+
+	newscale := 1.0
+	w.SetFixedScale(newscale)
+
+	assert.Equal(t, newscale, w.FixedScale())
+}
+
 func TestWindow_SetIcon(t *testing.T) {
 	w := d.CreateWindow("Test")
 	assert.Equal(t, fyne.CurrentApp().Icon(), w.Icon())
